@@ -110,7 +110,9 @@ public class SkillHelper : MonoBehaviour
         }
         
         // # transition
+
+        var command = new SkillCommand(controller);
         
-        controller.Transition(SkillStateType.Progress);
+        CommandManager.Instance.Execute(command);
     }
 }

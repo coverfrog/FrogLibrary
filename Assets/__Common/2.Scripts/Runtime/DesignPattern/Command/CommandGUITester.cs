@@ -39,7 +39,12 @@ public class CommandGUITester : GUITester
             CommandManager.Instance.Record();
         });
         
-        Draw(dataList.Count + 2, "Replay", () =>
+        Draw(dataList.Count + 2, "Record End", () =>
+        {
+            CommandManager.Instance.RecordEnd();
+        });
+        
+        Draw(dataList.Count + 3, "Replay", () =>
         {
             CommandManager.Instance.Replay();
         });

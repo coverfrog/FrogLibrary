@@ -5,4 +5,5 @@ using UnityEngine;
 public class MoveComponent
 {
     public Rigidbody2D rb2d;
+    public SpriteRenderer render;
 }

@@ -13,16 +13,32 @@ public class CommandManager : Singleton<CommandManager>
     [SerializeField] private bool _isReplaying;
     [SerializeField] private float _replayTime;
     
-    private SortedList<float, ICommand> _recordCommandList = new();
+    private SortedList<float, List<ICommand>> _recordCommandList = new();
 
     public void Execute(ICommand command)
     {
         command.Execute();
-        
-        if (_isRecording) 
-            _recordCommandList.Add(_recordingTime, command);
-        
-        Debug.Log($"Recorded Time: {_recordingTime}");
+
+        if (_isRecording)
+        {
+            if (_recordCommandList.ContainsKey(_recordingTime))
+            {
+                
+            }
+
+            else
+            {
+                var commandList = new List<ICommand>() { command };
+                _recordCommandList.Add(_recordingTime, commandList);
+            }
+
+            Debug.Log($"Recorded Time: {_recordingTime}");
+            
+        }
+        else
+        {
+            
+        }
     }
 
     public void Record()
@@ -33,6 +49,11 @@ public class CommandManager : Singleton<CommandManager>
         _isReplaying = false;
         
         _recordCommandList.Clear();
+    }
+
+    public void RecordEnd()
+    {
+        _isRecording = false;
     }
 
     public void Replay()
@@ -76,7 +97,11 @@ public class CommandManager : Singleton<CommandManager>
             if (!Mathf.Approximately(_replayTime, _recordCommandList.Keys[0])) 
                 return;
             
-            _recordCommandList.Values[0].Execute();
+            foreach (ICommand command in _recordCommandList.Values[0])
+            {
+                command.Execute();
+            }
+            
             _recordCommandList.RemoveAt(0);
         }
 

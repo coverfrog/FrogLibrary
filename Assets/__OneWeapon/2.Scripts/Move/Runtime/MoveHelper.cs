@@ -16,6 +16,7 @@ public class MoveHelper : MonoBehaviour
     {
         _context = new MoveContext(this);
         _context.ApplyAsset(_asset);
+        _context.SetIsMoveAble(this, true);
     }
 
     private void OnDisable()

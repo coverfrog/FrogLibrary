@@ -17,4 +17,8 @@ MonoBehaviour:
   _displayName: 
   _description: 
   _icon: {fileID: 0}
-  _isInput: 1
+  _isInputUse: 1
+  _isStatUse: 1
+  _statCodeName: MoveSpeed
+  _isLockHorizontal: 0
+  _isLockVertical: 1
