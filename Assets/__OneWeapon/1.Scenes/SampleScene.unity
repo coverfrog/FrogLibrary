@@ -439,6 +439,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &922091429
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 922091430}
+  - component: {fileID: 922091431}
+  m_Layer: 0
+  m_Name: Game Helper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &922091430
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922091429}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &922091431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922091429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df0056ece15345c192e8815af7dda12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1195921635
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +492,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1195921636}
-  - component: {fileID: 1195921638}
   - component: {fileID: 1195921639}
   m_Layer: 0
   m_Name: Skill Helper
@@ -472,24 +515,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1788372411}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1195921638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1195921635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f331b4d4c0742a6be03296e8c15b297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _offsetLeft: 20
-  _offsetTop: 20
-  _space: 10
-  _width: 150
-  _height: 50
-  _fontSize: 25
 --- !u!114 &1195921639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,7 +527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82e40495c0d84af6b8c5440bdb15ffa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  component:
+  _component:
     rb2d: {fileID: 1255785320}
     animator: {fileID: 1255785319}
     render: {fileID: 1255785317}
@@ -873,18 +898,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offsetLeft: 20
-  _offsetTop: 300
+  _offsetTop: 40
   _space: 10
   _width: 150
   _height: 50
   _fontSize: 25
-  _obj: {fileID: 1195921635}
-  _methodName: Handle
-  _dataIndex: 0
-  dataList:
-  - Slash
-  - Dash
-  - Parrying
 --- !u!4 &1581455489
 Transform:
   m_ObjectHideFlags: 0
@@ -1276,9 +1294,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322384e7111847a4951dbcc473634b02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  col: {fileID: 1899598377}
-  render: {fileID: 1899598378}
-  spriteCurrent: {fileID: 0}
+  _col: {fileID: 0}
+  _render: {fileID: 0}
+  _spriteCurrent: {fileID: 0}
+  _result: {fileID: 0}
 --- !u!1 &2029895938
 GameObject:
   m_ObjectHideFlags: 0
@@ -1372,16 +1391,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd61a7a26904c20b1a80625cb37b685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  component:
+  _component:
     rb2d: {fileID: 1255785320}
     render: {fileID: 1255785317}
+    animator: {fileID: 1255785319}
   _context:
-    _isMoveAble: 0
-    _isInputUse: 0
     _isLockHorizontal: 0
     _isLockVertical: 0
+    _isAnimUse: 1
+    _keyAnimName: 
+    _isInputUse: 0
+    _isMoveAble: 0
     _direction: {x: 0, y: 0}
-    _duration: 0
+    _speed: 0
   _asset: {fileID: 11400000, guid: b3920d0720fd4484391d78bc2056a536, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -1391,3 +1413,4 @@ SceneRoots:
   - {fileID: 50004504}
   - {fileID: 1788372411}
   - {fileID: 1581455489}
+  - {fileID: 922091430}

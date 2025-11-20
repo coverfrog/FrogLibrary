@@ -19,25 +19,22 @@ public class CommandManager : Singleton<CommandManager>
     {
         command.Execute();
 
-        if (_isRecording)
+        if (!_isRecording)
         {
-            if (_recordCommandList.ContainsKey(_recordingTime))
-            {
-                
-            }
-
-            else
-            {
-                var commandList = new List<ICommand>() { command };
-                _recordCommandList.Add(_recordingTime, commandList);
-            }
-
-            Debug.Log($"Recorded Time: {_recordingTime}");
-            
+            return;
         }
+        
+        if (_recordCommandList.ContainsKey(_recordingTime))
+        {
+            _recordCommandList[_recordingTime].Add(command);
+        }
+
         else
         {
-            
+            _recordCommandList.Add(_recordingTime, new List<ICommand>()
+            {
+                command
+            });
         }
     }
 

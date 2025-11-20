@@ -69,8 +69,6 @@ public static class EventBus
     
     #endregion
     
-    // #
-
     #region UnregisterEvent
 
     public static bool UnregisterEvent(string eventName)
@@ -87,10 +85,6 @@ public static class EventBus
     
     #endregion
     
-   
-
-    // # 구독
-
     #region Subscribe
 
     public static void Subscribe(string eventName, int i, UnityAction callback)
@@ -195,8 +189,4 @@ public static class EventBus
     }
 
     #endregion
-    
-    // # 발행
-
-    
 }

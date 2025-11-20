@@ -6,7 +6,7 @@ using UnityEngine;
 public class SkillHelper : MonoBehaviour
 {
     [Header("# Component")]
-    public SkillComponent component = new();
+    [SerializeField] private SkillComponent _component = new();
     
     [Header("# Init")]
     [SerializeField] private List<SkillAsset> _assetList = new();
@@ -14,7 +14,7 @@ public class SkillHelper : MonoBehaviour
     [Header("# Runtime")]
     [SerializeField] private List<SkillController> _controllerList = new();
     
-    // # OnEnable
+    // ---------------------------------------------------------------------------------
     
     private void OnEnable()
     {
@@ -25,42 +25,46 @@ public class SkillHelper : MonoBehaviour
         // # asset -> controller
         
         _controllerList.Clear();
-        _assetList.ForEach(asset => _controllerList.Add(new SkillController(this, asset)));
+        _assetList.ForEach(asset =>
+        {
+            var controller = new SkillController(this); 
+            controller.ApplyAsset(asset);
+            controller.Transition(SkillStateType.Enable);
+            
+            _controllerList.Add(controller);
+        });
         
-        // # register controller list
-        //
-        // 이벤트 발행을 따로 하는 이유는 최초 상태를 추격하지 않으려 하기 위함이다.
-        // Disable 되는 경우 전부 Clear 처리 하기 때문에 따로 이벤트 해제는 하지 않음
-        
-        _controllerList.ForEach(controller => controller.OnStateChanged  += OnStateChanged);
-        _controllerList.ForEach(controller => controller.OnStateProgress += OnStateProgress);
-        _controllerList.ForEach(controller => controller.OnStateCoolTime += OnStateCoolTime);
-        
-        // # transition
-        // 
-        // 원래라면 조건 ( 레벨, 능력치 ) 에 따라 조건이 변경 되야 하나 현재는 바로 사용 가능 상태로 전환
-        // 현재 게임에선 해당 사항이 없으므로 진행되지 않음
-        
-        _controllerList.ForEach(controller => controller.Transition(SkillStateType.Enable));
+        InputManager.Instance.OnActClick += OnActClick;
     }
-    
-    // # OnDisable
-    
+
     private void OnDisable()
     {
         // # clear controller
         
         _controllerList.ForEach(controller => controller.Dispose());
         _controllerList.Clear();
+        
+        if (InputManager.Instance) InputManager.Instance.OnActClick -= OnActClick;
     }
 
-    // # Update
-    
     private void Update()
     {
         _controllerList.ForEach(controller => controller.OnUpdate());
     }
 
+    // ---------------------------------------------------------------------------------
+    
+    private void OnActClick(bool icClick)
+    {
+        if (icClick)
+        {
+            Debug.Log("Click");
+        }
+    }
+    
+    // ---------------------------------------------------------------------------------
+    
+    
     // # OnStateChanged
     
     private void OnStateChanged(SkillController controller, ISkillState prevState, ISkillState newState)
@@ -94,7 +98,7 @@ public class SkillHelper : MonoBehaviour
         //
         // 기술 자체를 못찾은거면 코드 자체가 에러
         
-        var controller = _controllerList.FirstOrDefault(controller => controller.CodeName == assetCodeName);
+        var controller = _controllerList.FirstOrDefault(controller => controller.Context.CodeName == assetCodeName);
         if (controller == null)
         {
             return;
@@ -104,15 +108,15 @@ public class SkillHelper : MonoBehaviour
         //
         // 사용에 실패 했다면 사용자에게 알려주어야 함
         
-        if (controller.StateType != SkillStateType.Enable)
+        if (controller.Context.StateType != SkillStateType.Enable)
         {
             return;
         }
         
         // # transition
 
-        var command = new SkillCommand(controller);
-        
-        CommandManager.Instance.Execute(command);
+        // var command = new SkillCommand(controller);
+        //
+        // CommandManager.Instance.Execute(command);
     }
 }

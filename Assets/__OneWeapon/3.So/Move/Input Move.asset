@@ -18,7 +18,10 @@ MonoBehaviour:
   _description: 
   _icon: {fileID: 0}
   _isInputUse: 1
-  _isStatUse: 1
+  _isStatUse: 0
   _statCodeName: MoveSpeed
+  _defaultSpeed: 3
   _isLockHorizontal: 0
   _isLockVertical: 1
+  _isAnimUse: 1
+  _keyAnimName: IsMove

@@ -11,7 +11,8 @@ public class InputManager : Singleton<InputManager>,
 {
     private Dictionary<string, float> _durationDict = new();
     private Dictionary<string, bool> _isPerformedDict = new();
-    private Dictionary<string, Action> _updateActions = new();
+    
+    private Dictionary<string, Action> _fixedUpdateDict = new();
     
     private List<string> _actionNames = new();
     
@@ -33,7 +34,7 @@ public class InputManager : Singleton<InputManager>,
         // Input System 은 이름 앞에 'On'을 자동으로 붙혀짐
         
         _isPerformedDict.Clear();
-        _updateActions.Clear();
+        _fixedUpdateDict.Clear();
         _durationDict.Clear();
         
         _actionNames.Clear();
@@ -46,7 +47,7 @@ public class InputManager : Singleton<InputManager>,
             
                 if (!_isPerformedDict.TryAdd(targetName, false)) {}
 
-                if (!_updateActions.TryAdd(targetName, null)) {}
+                if (!_fixedUpdateDict.TryAdd(targetName, null)) {}
                 
                 if (!_durationDict.TryAdd(targetName, 0)) {}
                 
@@ -59,7 +60,7 @@ public class InputManager : Singleton<InputManager>,
         // 예시 :
         // _updateActions[nameof(OnMove)] = OnMove;
 
-        _updateActions[nameof(OnMove)] = OnMove;
+        _fixedUpdateDict[nameof(OnMove)] = OnMove;
     }
 
     private void OnDisable()
@@ -67,7 +68,7 @@ public class InputManager : Singleton<InputManager>,
         _inputModule?.Dispose();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         foreach (var actionName in _actionNames)
         {
@@ -78,8 +79,8 @@ public class InputManager : Singleton<InputManager>,
 
             if (performed)
             {
-                _durationDict[actionName] += Time.deltaTime;
-                _updateActions[actionName]?.Invoke();
+                _durationDict[actionName] += Time.fixedDeltaTime;
+                _fixedUpdateDict[actionName]?.Invoke();
             }
                 
             else
@@ -89,34 +90,72 @@ public class InputManager : Singleton<InputManager>,
         }
     }
 
-    private string OnInput(InputAction.CallbackContext context, [CallerMemberName] string caller = "")
+    private void OnInput(InputAction.CallbackContext context, [CallerMemberName] string caller = "")
     {
         _isPerformedDict[caller] = context.performed;
-
-        return caller;
     }
 
     private string ToKey([CallerMemberName] string caller = "") => caller;
     
-    //
+    // ---------------------------------------------------------------------------------
     
-    public event Action<Vector2, float> OnInputMove; 
+    public event Action<Vector2> OnActMove;
+    
+    public event Action<Vector2, float> OnActMoveFixedUpdate; 
     
     public Vector2 ValueMove { get; private set; }
 
     public void OnMove()
     {
-        OnInputMove?.Invoke(ValueMove, _durationDict[ToKey()]);
+        OnActMoveFixedUpdate?.Invoke(ValueMove, _durationDict[ToKey()]);
     }
     
     public void OnMove(InputAction.CallbackContext context)
     {
         ValueMove = context.ReadValue<Vector2>();
+        OnActMove?.Invoke(ValueMove);
 
         OnInput(context);
         OnMove();
     }
+    
+    // ---------------------------------------------------------------------------------
 
+    public event Action<bool> OnActClick;
+    public event Action<bool, float> OnActClickFixedUpdate; 
+    
+    public bool ValueClick { get; private set; }
+
+    public void OnClick()
+    {
+        OnActClickFixedUpdate?.Invoke(ValueClick, _durationDict[ToKey()]);
+    }
+
+    public void OnClick(InputAction.CallbackContext context)
+    {
+        ValueClick = context.ReadValue<float>() > 0.5f;
+        OnActClick?.Invoke(ValueClick);
+
+        OnInput(context);
+        OnClick();
+    }
+
+    // ---------------------------------------------------------------------------------
+    
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        
+    }
+
+    // ---------------------------------------------------------------------------------
+    
+    public void OnMiddleClick(InputAction.CallbackContext context)
+    {
+       
+    }
+    
+    // ---------------------------------------------------------------------------------
+    
     public void OnLook(InputAction.CallbackContext context)
     {
        
@@ -177,20 +216,7 @@ public class InputManager : Singleton<InputManager>,
         
     }
 
-    public void OnClick(InputAction.CallbackContext context)
-    {
-        
-    }
-
-    public void OnRightClick(InputAction.CallbackContext context)
-    {
-        
-    }
-
-    public void OnMiddleClick(InputAction.CallbackContext context)
-    {
-       
-    }
+    
 
     public void OnScrollWheel(InputAction.CallbackContext context)
     {

@@ -2,7 +2,7 @@
 {
     private SkillController _controller;
     
-    public SkillCommand(SkillController controller)
+    public SkillCommand(SkillController controller, SkillContext context)
     {
         _controller = controller;
     }
