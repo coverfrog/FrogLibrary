@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e758bba865fa448a826d51e1e48b6108, type: 3}
+  m_Script: {fileID: 11500000, guid: cbde6abec92d4c77aa4563a405ca2077, type: 3}
   m_Name: Dash
   m_EditorClassIdentifier: 
   _id: 0
@@ -17,7 +17,7 @@ MonoBehaviour:
   _displayName: Dash
   _description: 
   _icon: {fileID: 0}
-  _isTarget: 0
-  _isAnimate: 1
-  _animatorName: Dash
-  _value: 0
+  _isInputUse: 1
+  _slotIndex: 2
+  _controlType: 0
+  _interactType: 0

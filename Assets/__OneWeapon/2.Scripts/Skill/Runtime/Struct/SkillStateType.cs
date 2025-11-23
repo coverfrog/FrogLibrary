@@ -1,9 +1,9 @@
 ﻿public enum SkillStateType
 {
+    Null,
     Inactive,
     Locked,
     Enable,
-    Disable,
-    Progress,
-    CoolTime,
+    InProgress,
+    CoolTime
 }

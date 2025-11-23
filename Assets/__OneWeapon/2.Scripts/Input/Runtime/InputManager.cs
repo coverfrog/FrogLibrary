@@ -30,35 +30,17 @@ public class InputManager : Singleton<InputManager>,
         
         _inputModule.Enable();
         
-        // # 전체 액션 맵 이름 기준으로 전체 키 등록
-        // Input System 은 이름 앞에 'On'을 자동으로 붙혀짐
-        
         _isPerformedDict.Clear();
         _fixedUpdateDict.Clear();
         _durationDict.Clear();
-        
-        _actionNames.Clear();
 
-        foreach (var ia in _inputModule.asset.actionMaps)
+        _actionNames = InputUtil.GetActionNameList(_inputModule.asset, true);
+        _actionNames.ForEach(str =>
         {
-            foreach (var a in ia.actions)
-            {
-                string targetName = $"On{a.name}";
-            
-                if (!_isPerformedDict.TryAdd(targetName, false)) {}
-
-                if (!_fixedUpdateDict.TryAdd(targetName, null)) {}
-                
-                if (!_durationDict.TryAdd(targetName, 0)) {}
-                
-                _actionNames.Add(targetName);
-            }
-        }
-        
-        // # Update 필요 목록은 이 곳에 작성
-        //
-        // 예시 :
-        // _updateActions[nameof(OnMove)] = OnMove;
+            _isPerformedDict.Add(str, false);   
+            _fixedUpdateDict.Add(str, null);   
+            _durationDict.Add(str, 0);
+        });
 
         _fixedUpdateDict[nameof(OnMove)] = OnMove;
     }
@@ -72,7 +54,7 @@ public class InputManager : Singleton<InputManager>,
     {
         foreach (var actionName in _actionNames)
         {
-            if (!_isPerformedDict.TryGetValue(actionName, out  bool performed))
+            if (!_isPerformedDict.TryGetValue(actionName, out bool performed))
             {
                 return;
             }
@@ -122,13 +104,12 @@ public class InputManager : Singleton<InputManager>,
     // ---------------------------------------------------------------------------------
 
     public event Action<bool> OnActClick;
-    public event Action<bool, float> OnActClickFixedUpdate; 
     
     public bool ValueClick { get; private set; }
 
     public void OnClick()
     {
-        OnActClickFixedUpdate?.Invoke(ValueClick, _durationDict[ToKey()]);
+        
     }
 
     public void OnClick(InputAction.CallbackContext context)
@@ -142,18 +123,65 @@ public class InputManager : Singleton<InputManager>,
 
     // ---------------------------------------------------------------------------------
     
-    public void OnRightClick(InputAction.CallbackContext context)
+    public event Action<bool> OnActRightClick;
+    
+    public bool ValueRightClick { get; private set; }
+
+    public void OnRightClick()
     {
         
     }
 
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        ValueRightClick = context.ReadValue<float>() > 0.5f;
+        OnActRightClick?.Invoke(ValueClick);
+
+        OnInput(context);
+        OnRightClick();
+    }
+
     // ---------------------------------------------------------------------------------
+    
+    public event Action<bool> OnActMiddleClick;
+    
+    public bool ValueMiddleClick { get; private set; }
+
+    public void OnMiddleClick()
+    {
+        
+    }
     
     public void OnMiddleClick(InputAction.CallbackContext context)
     {
-       
+        ValueMiddleClick = context.ReadValue<float>() > 0.5f;
+        OnActMiddleClick?.Invoke(ValueClick);
+
+        OnInput(context);
+        OnMiddleClick();
     }
     
+    // ---------------------------------------------------------------------------------
+    
+    public event Action<bool> OnActJump;
+    
+    public bool ValueJump { get; private set; }
+
+    public void OnJump()
+    {
+        
+    }
+    
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        ValueJump = context.ReadValue<float>() > 0.5f;
+        OnActJump?.Invoke(ValueJump);
+
+        OnInput(context);
+        OnJump();
+    }
+    
+        
     // ---------------------------------------------------------------------------------
     
     public void OnLook(InputAction.CallbackContext context)
@@ -176,10 +204,7 @@ public class InputManager : Singleton<InputManager>,
         
     }
 
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        
-    }
+  
 
     public void OnPrevious(InputAction.CallbackContext context)
     {

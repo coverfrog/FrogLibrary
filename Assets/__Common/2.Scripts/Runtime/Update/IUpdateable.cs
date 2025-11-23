@@ -1,4 +1,4 @@
-﻿public interface IUpdateable
+﻿public interface IUpdateAble
 {
     void OnUpdate();
 }

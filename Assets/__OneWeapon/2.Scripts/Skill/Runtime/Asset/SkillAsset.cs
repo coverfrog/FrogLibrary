@@ -3,43 +3,27 @@
 [CreateAssetMenu]
 public class SkillAsset : IdentifiedObject
 {
-    [Header("# Target")]
-    [SerializeField] private bool _isTarget;
-
-    #region Getter
-    
-    public bool IsTarget => _isTarget;
-
-    #endregion
-
-    [Header("# Duration")]
-    [SerializeField] private float _progressDuration = 0.5f;
-    [SerializeField] private float _coolTimeDuration = 1.0f;
+    [Header("# Input")]
+    [SerializeField] private bool _isInputUse;
+    [SerializeField] private int _slotIndex = -1;
     
     #region Getter
 
-    public float ProgressDuration => _progressDuration;
-    public float CoolTimeDuration => _coolTimeDuration;
-
+    public bool IsInputUse => _isInputUse;
+    
+    public int SlotIndex => _slotIndex;
+    
     #endregion
     
-    [Header("# Animator")]
-    [SerializeField] private bool _isAnimate = true;
-    [SerializeField] private string _animatorName;
+    [Header("# Type")]
+    [SerializeField] private SkillControlType _controlType;
+    [SerializeField] private SkillInteractType _interactType;
     
     #region Getter
-
-    public bool IsAnimate => _isAnimate;
-    public string AnimatorName => _animatorName;
-
-    #endregion
-
-    [Header("$ Value")]
-    [SerializeField] private bool _isPolygonPhysics = true;
     
-    #region Getter
-
-    public bool IsPolygonPhysics => _isPolygonPhysics;
-
+    public SkillControlType ControlType => _controlType;
+    
+    public SkillInteractType InteractType => _interactType;
+    
     #endregion
 }

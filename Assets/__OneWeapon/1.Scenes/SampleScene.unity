@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 891200052}
   - component: {fileID: 891200054}
   - component: {fileID: 891200053}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -483,60 +483,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df0056ece15345c192e8815af7dda12b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1195921635
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1195921636}
-  - component: {fileID: 1195921639}
-  m_Layer: 0
-  m_Name: Skill Helper
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1195921636
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1195921635}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1788372411}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1195921639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1195921635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82e40495c0d84af6b8c5440bdb15ffa6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _component:
-    rb2d: {fileID: 1255785320}
-    animator: {fileID: 1255785319}
-    render: {fileID: 1255785317}
-    hitBox: {fileID: 1899598379}
-  _assetList:
-  - {fileID: 11400000, guid: ad293c89bae65e6489370c79405e4e56, type: 2}
-  - {fileID: 11400000, guid: 04099cca0a0247242b689559e5889347, type: 2}
-  - {fileID: 11400000, guid: 86dc9e3dc27360742a49c96ed60cdd01, type: 2}
-  _controllerList: []
 --- !u!1 &1237815090
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,9 +762,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 10
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -964,9 +910,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1195921636}
   - {fileID: 2029895939}
   - {fileID: 2113736017}
+  - {fileID: 2026968977}
   - {fileID: 1255785318}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -993,7 +939,6 @@ GameObject:
   - component: {fileID: 1899598376}
   - component: {fileID: 1899598378}
   - component: {fileID: 1899598377}
-  - component: {fileID: 1899598379}
   m_Layer: 0
   m_Name: Skill Hit Box
   m_TagString: Untagged
@@ -1282,22 +1227,70 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1899598379
+--- !u!1 &2026968976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2026968977}
+  - component: {fileID: 2026968978}
+  - component: {fileID: 2026968979}
+  m_Layer: 0
+  m_Name: Skill Helper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2026968977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026968976}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1788372411}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2026968978
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1899598375}
+  m_GameObject: {fileID: 2026968976}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 322384e7111847a4951dbcc473634b02, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f1c6e12336a4640a95a2304c165138c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _col: {fileID: 0}
-  _render: {fileID: 0}
-  _spriteCurrent: {fileID: 0}
-  _result: {fileID: 0}
+--- !u!114 &2026968979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026968976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b18b20d12fe480087d350f51e7b70c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _component:
+    inputAdapter: {fileID: 2026968978}
+  _assetList:
+  - {fileID: 11400000, guid: 86dc9e3dc27360742a49c96ed60cdd01, type: 2}
+  - {fileID: 11400000, guid: 04099cca0a0247242b689559e5889347, type: 2}
+  - {fileID: 11400000, guid: ad293c89bae65e6489370c79405e4e56, type: 2}
+  _controllerList: []
 --- !u!1 &2029895938
 GameObject:
   m_ObjectHideFlags: 0
@@ -1346,6 +1339,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9709fb6771eed584bb80628da0eabb5d, type: 2}
   - {fileID: 11400000, guid: 3cddbe56af0c18f49834b33d57b6108a, type: 2}
   - {fileID: 11400000, guid: 2e40ea0c64f7cfe46a6cdf81d5d0254e, type: 2}
+  - {fileID: 11400000, guid: 47cae0c99f5d53646b40249e24805fcb, type: 2}
   _controllerList: []
 --- !u!1 &2113736016
 GameObject:
@@ -1393,17 +1387,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _component:
     rb2d: {fileID: 1255785320}
+    col: {fileID: 1255785321}
     render: {fileID: 1255785317}
     animator: {fileID: 1255785319}
+    statHelper: {fileID: 2029895940}
   _context:
     _isLockHorizontal: 0
     _isLockVertical: 0
+    _isStatUse: 1
+    _statCodeNameMoveSpeed: MoveSpeed
+    _statCodeNameJumpForce: JumpForce
     _isAnimUse: 1
-    _keyAnimName: 
+    _keyAnimMove: IsMove
+    _keyAnimJump: Jump
     _isInputUse: 0
     _isMoveAble: 0
+    _isJumpAble: 0
+    _isGrounded: 0
+    _groundLayer:
+      serializedVersion: 2
+      m_Bits: 0
     _direction: {x: 0, y: 0}
-    _speed: 0
+    _moveSpeed: 0
+    _jumpForce: 15
   _asset: {fileID: 11400000, guid: b3920d0720fd4484391d78bc2056a536, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

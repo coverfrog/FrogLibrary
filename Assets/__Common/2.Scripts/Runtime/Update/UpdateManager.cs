@@ -6,17 +6,28 @@ using System.Collections.Generic;
 /// </summary>
 public class UpdateManager : Singleton<UpdateManager>
 {
-    private readonly List<IUpdateable> _updateableList = new List<IUpdateable>();
+    private readonly List<IUpdateAble> _updateList = new List<IUpdateAble>();
+    private readonly List<IFixedUpdateAble> _fixedUpdateList = new List<IFixedUpdateAble>();
     
-    public void Add(IUpdateable able) => _updateableList.Add(able);
+    public void AddUpdate(IUpdateAble able) => _updateList.Add(able);
+    public void AddFixedUpdate(IFixedUpdateAble able) => _fixedUpdateList.Add(able);
     
-    public void Remove(IUpdateable able) => _updateableList.Remove(able);
+    public void RemoveUpdate(IUpdateAble able) => _updateList.Remove(able);
+    public void RemoveFixedUpdate(IFixedUpdateAble able) => _fixedUpdateList.Remove(able);
 
     private void Update()
     {
-        foreach (IUpdateable able in _updateableList)
+        foreach (IUpdateAble able in _updateList)
         {
             able?.OnUpdate();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        foreach (IFixedUpdateAble able in _fixedUpdateList)
+        {
+            able?.OnFixedUpdate();
         }
     }
 }
