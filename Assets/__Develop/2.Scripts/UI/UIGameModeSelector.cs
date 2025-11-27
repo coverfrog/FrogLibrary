@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UIGameModeSelector : MonoBehaviour
 {
     [SerializeField] private UIGameModeSelect _origin;
+    [SerializeField] private RectTransform _content;
 
     private Dictionary<string, UIGameModeSelect> _selectDict = new();
     
@@ -25,7 +26,7 @@ public class UIGameModeSelector : MonoBehaviour
                 continue;
             }
 
-            var ins = Instantiate(_origin, transform).Init(g, OnClick);
+            var ins = Instantiate(_origin, _content).Init(g, OnClick);
             
             _selectDict.Add(key, ins);
         }
