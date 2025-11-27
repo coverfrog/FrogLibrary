@@ -1,4 +1,7 @@
-﻿public interface ICommand
+﻿namespace FrogLibrary
 {
-    void Execute();
+    public interface ICommand
+    {
+        void Execute();
+    }
 }

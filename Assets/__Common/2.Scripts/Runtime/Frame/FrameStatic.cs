@@ -1,23 +1,27 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public static class FrameStatic
+namespace FrogLibrary
 {
-    public static WaitForEndOfFrame EndOfFrame { get; } = new WaitForEndOfFrame();
     
-    public static WaitForFixedUpdate FixedUpdate { get; } = new WaitForFixedUpdate();
-    
-    private static Dictionary<float, WaitForSeconds> _seconds = new Dictionary<float, WaitForSeconds>();
-
-    public static WaitForSeconds Seconds(float seconds)
+    public static class FrameStatic
     {
-        if (_seconds.TryGetValue(seconds, out WaitForSeconds result))
+        public static WaitForEndOfFrame EndOfFrame { get; } = new WaitForEndOfFrame();
+    
+        public static WaitForFixedUpdate FixedUpdate { get; } = new WaitForFixedUpdate();
+    
+        private static Dictionary<float, WaitForSeconds> _seconds = new Dictionary<float, WaitForSeconds>();
+
+        public static WaitForSeconds Seconds(float seconds)
         {
-            return result;
+            if (_seconds.TryGetValue(seconds, out WaitForSeconds result))
+            {
+                return result;
+            }
+        
+            _seconds.Add(seconds, new WaitForSeconds(seconds));
+        
+            return _seconds[seconds];
         }
-        
-        _seconds.Add(seconds, new WaitForSeconds(seconds));
-        
-        return _seconds[seconds];
     }
 }

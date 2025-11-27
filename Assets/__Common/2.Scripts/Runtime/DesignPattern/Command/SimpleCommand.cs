@@ -1,16 +1,19 @@
 ﻿using System;
 
-public class SimpleCommand : ICommand
+namespace FrogLibrary
 {
-    private Action _action;
-    
-    public SimpleCommand(Action action)
+    public class SimpleCommand : ICommand
     {
-        _action = action;
-    }
+        private Action _action;
     
-    public void Execute()
-    {
-        _action?.Invoke();
+        public SimpleCommand(Action action)
+        {
+            _action = action;
+        }
+    
+        public void Execute()
+        {
+            _action?.Invoke();
+        }
     }
 }

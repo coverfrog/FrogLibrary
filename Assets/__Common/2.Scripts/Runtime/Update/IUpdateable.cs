@@ -1,4 +1,7 @@
-﻿public interface IUpdateAble
+﻿namespace FrogLibrary
 {
-    void OnUpdate();
+    public interface IUpdateAble
+    {
+        void OnUpdate();
+    }
 }

@@ -1,4 +1,7 @@
-﻿public interface IFixedUpdateAble
+﻿namespace FrogLibrary
 {
-    void OnFixedUpdate();
+    public interface IFixedUpdateAble
+    {
+        void OnFixedUpdate();
+    }
 }

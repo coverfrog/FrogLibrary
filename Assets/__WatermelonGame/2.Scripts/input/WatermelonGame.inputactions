@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "name": "WatermelonGame",
+    "maps": [
+        {
+            "name": "Default",
+            "id": "5ba950ca-c7ed-4f56-aea0-25004ff8843a",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "827bc2bf-b118-450d-9540-1e12486338d8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1dfec114-af0f-4da8-9df6-ff22afb65dc0",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6005d060-46a3-4b6b-a0e2-3abc17c45019",
+                    "path": "<XInputController>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

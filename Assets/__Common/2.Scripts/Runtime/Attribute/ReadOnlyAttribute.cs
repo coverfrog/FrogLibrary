@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-public class ReadOnlyAttribute : PropertyAttribute
+namespace FrogLibrary
 {
-    public readonly bool onlyInPlayMode;
-
-    public ReadOnlyAttribute(bool onlyInPlayMode = false)
+    public class ReadOnlyAttribute : PropertyAttribute
     {
-        this.onlyInPlayMode = onlyInPlayMode;
+        public readonly bool onlyInPlayMode;
+
+        public ReadOnlyAttribute(bool onlyInPlayMode = false)
+        {
+            this.onlyInPlayMode = onlyInPlayMode;
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿public interface IObserver<T>
+﻿namespace FrogLibrary
 {
-    void OnNotify(in T t);
+    public interface IObserver<T>
+    {
+        void OnNotify(in T t);
+    }
 }

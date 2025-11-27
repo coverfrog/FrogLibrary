@@ -1,55 +1,58 @@
 ﻿using UnityEngine;
 
-public abstract class Singleton<T> : MonoBehaviour where T : Component
+namespace FrogLibrary
 {
-    private static object _lock = new();
-    
-    private static bool _applicationQuitting = false;
-    
-    public static T Instance
+    public abstract class Singleton<T> : MonoBehaviour where T : Component
     {
-        get
+        private static object _lock = new();
+    
+        private static bool _applicationQuitting = false;
+    
+        public static T Instance
         {
-            if (_applicationQuitting)
-                return null;
-
-            lock (_lock)
+            get
             {
-                if (_instance)
-                    return _instance;
+                if (_applicationQuitting)
+                    return null;
 
-                _instance = FindAnyObjectByType<T>();
+                lock (_lock)
+                {
+                    if (_instance)
+                        return _instance;
+
+                    _instance = FindAnyObjectByType<T>();
             
-                if (_instance)
-                    return _instance;
+                    if (_instance)
+                        return _instance;
             
-                string name = NicifyUtil.ToNicifyVariableName(typeof(T).Name);
+                    string name = StringUtil.ToNicifyVariableName(typeof(T).Name);
                 
-                _instance = new GameObject(name).AddComponent<T>();
+                    _instance = new GameObject(name).AddComponent<T>();
+                }
+                
+                return _instance;
             }
-                
-            return _instance;
         }
-    }
     
-    private static T _instance;
+        private static T _instance;
     
-   protected virtual void Awake()
-    {
-        if (_instance == null)
+        protected virtual void Awake()
         {
-            _instance = this as T;
+            if (_instance == null)
+            {
+                _instance = this as T;
 
-            DontDestroyOnLoad(gameObject);
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
    
-    private void OnDestroy()
-    {
-        _applicationQuitting = true;
+        private void OnDestroy()
+        {
+            _applicationQuitting = true;
+        }
     }
 }

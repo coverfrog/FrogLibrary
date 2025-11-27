@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommandGUITester : GUITester
+namespace FrogLibrary
 {
-    private void OnGUI()
+    public class CommandGUITester : GUITester
     {
-        Draw(0, "Record", () =>
+        private void OnGUI()
         {
-            CommandManager.Instance.Record();
-        });
+            Draw(0, "Record", () =>
+            {
+                CommandManager.Instance.Record();
+            });
         
-        Draw(1, "Record End", () =>
-        {
-            CommandManager.Instance.RecordEnd();
-        });
+            Draw(1, "Record End", () =>
+            {
+                CommandManager.Instance.RecordEnd();
+            });
         
-        Draw(2, "Replay", () =>
-        {
-            CommandManager.Instance.Replay();
-        });
+            Draw(2, "Replay", () =>
+            {
+                CommandManager.Instance.Replay();
+            });
+        }
     }
 }

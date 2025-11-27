@@ -1,78 +1,82 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class SingletonResources<T1> : MonoBehaviour where T1 : Component
+namespace FrogLibrary
 {
-    protected abstract string ResourcePath { get; }
-
-    private static object _lock = new();
     
-    private static bool _applicationQuitting = false;
-    
-    public static T1 Instance
+    public abstract class SingletonResources<T1> : MonoBehaviour where T1 : Component
     {
-        get
+        protected abstract string ResourcePath { get; }
+
+        private static object _lock = new();
+    
+        private static bool _applicationQuitting = false;
+    
+        public static T1 Instance
         {
-            if (_applicationQuitting)
-                return null;
-
-            lock (_lock)
+            get
             {
-                if (_instance)
-                    return _instance;
+                if (_applicationQuitting)
+                    return null;
 
-                _instance = FindAnyObjectByType<T1>();
-            
-                if (_instance)
-                    return _instance;
-
-                string resourcesPath = (Activator.CreateInstance<T1>() as SingletonResources<T1>)?.ResourcePath;
-                string objName = NicifyUtil.ToNicifyVariableName(typeof(T1).Name);
-            
-                if (string.IsNullOrEmpty(resourcesPath))
+                lock (_lock)
                 {
-                    _instance = new GameObject(objName).AddComponent<T1>();
-                }
+                    if (_instance)
+                        return _instance;
 
-                else
-                {
-                    T1 resource = Resources.Load<T1>(resourcesPath);
+                    _instance = FindAnyObjectByType<T1>();
+            
+                    if (_instance)
+                        return _instance;
 
-                    if (resource)
+                    string resourcesPath = (Activator.CreateInstance<T1>() as SingletonResources<T1>)?.ResourcePath;
+                    string objName = StringUtil.ToNicifyVariableName(typeof(T1).Name);
+            
+                    if (string.IsNullOrEmpty(resourcesPath))
                     {
-                        _instance = Instantiate(resource);
-                        _instance.name = objName;
+                        _instance = new GameObject(objName).AddComponent<T1>();
                     }
 
                     else
                     {
-                        _instance = new GameObject(objName).AddComponent<T1>();
+                        T1 resource = Resources.Load<T1>(resourcesPath);
+
+                        if (resource)
+                        {
+                            _instance = Instantiate(resource);
+                            _instance.name = objName;
+                        }
+
+                        else
+                        {
+                            _instance = new GameObject(objName).AddComponent<T1>();
+                        }
                     }
                 }
-            }
             
-            return _instance;
+                return _instance;
+            }
         }
-    }
     
-    private static T1 _instance;
+        private static T1 _instance;
     
-    protected virtual void Awake()
-    {
-        if (_instance == null)
+        protected virtual void Awake()
         {
-            _instance = this as T1;
+            if (_instance == null)
+            {
+                _instance = this as T1;
 
-            DontDestroyOnLoad(gameObject);
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
-        else
+
+        private void OnDestroy()
         {
-            Destroy(gameObject);
+            _applicationQuitting = true;
         }
-    }
-
-    private void OnDestroy()
-    {
-        _applicationQuitting = true;
     }
 }
