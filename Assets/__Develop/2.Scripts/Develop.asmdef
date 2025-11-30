@@ -1,6 +1,6 @@
 {
     "name": "Develop",
-    "rootNamespace": "",
+    "rootNamespace": "Develop",
     "references": [
         "GUID:4983fced206213d43a827d7b093f6740",
         "GUID:6055be8ebefd69e48b49212b09b47b2f"
