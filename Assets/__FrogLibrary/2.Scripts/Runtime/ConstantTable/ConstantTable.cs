@@ -1,0 +1,10 @@
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+namespace FrogLibrary
+{
+    public abstract class ConstantTable : IdentifiedObject
+    {
+        public abstract void Load(IReadOnlyDictionary<int, IReadOnlyDictionary<int, IReadOnlyList<object>>> data);
+    }
+}
