@@ -13,10 +13,14 @@ namespace FrogLibrary
             yield return new WaitUntil(() => Bootstrap.IsBoot);
             
             AfterBoot();
+            
+            yield return new WaitUntil(() => Bootstrap.IsLoadedData);
         }
         
         protected virtual void BeforeBoot() {}
         
         protected virtual void AfterBoot() {}
+        
+        protected virtual void AfterLoadedData() {}
     }
 }
