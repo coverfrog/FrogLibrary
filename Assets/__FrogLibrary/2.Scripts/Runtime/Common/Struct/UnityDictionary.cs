@@ -11,42 +11,41 @@ namespace FrogLibrary
     [Serializable]
     public class UnityDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
-        [SerializeField] private List<TKey> _keys = new List<TKey>();
-
-        [SerializeField] private List<TValue> _values = new List<TValue>();
-
+        [SerializeField] private List<TKey> m_keys = new List<TKey>();
+        [SerializeField] private List<TValue> m_values = new List<TValue>();
 
         public UnityDictionary()
         {
+            
         }
 
         public UnityDictionary(int capacity)
         {
-            _keys.Capacity = capacity;
-            _values.Capacity = capacity;
+            m_keys.Capacity = capacity;
+            m_values.Capacity = capacity;
         }
 
         public bool ContainsKey(TKey key)
         {
-            return _keys.Contains(key);
+            return m_keys.Contains(key);
         }
 
         public void Add(TKey key, TValue value)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
-            if (_keys.Contains(key))
+            if (m_keys.Contains(key))
                 throw new ArgumentException("key already exit " + key);
-            _keys.Add(key);
-            _values.Add(value);
+            m_keys.Add(key);
+            m_values.Add(value);
         }
 
         public bool Remove(TKey key)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
-            if (!_keys.Contains(key)) return false;
-            var index = _keys.IndexOf(key);
-            _keys.RemoveAt(index);
-            _values.RemoveAt(index);
+            if (!m_keys.Contains(key)) return false;
+            var index = m_keys.IndexOf(key);
+            m_keys.RemoveAt(index);
+            m_values.RemoveAt(index);
             return true;
         }
 
@@ -57,17 +56,17 @@ namespace FrogLibrary
         // lists for storing keys/values is an implementation detail.
         private void RemoveAt(int index)
         {
-            if (index >= _keys.Count) throw new ArgumentOutOfRangeException(nameof(index));
-            _keys.RemoveAt(index);
-            _values.RemoveAt(index);
+            if (index >= m_keys.Count) throw new ArgumentOutOfRangeException(nameof(index));
+            m_keys.RemoveAt(index);
+            m_values.RemoveAt(index);
         }
 
         public bool TryGetValue(TKey key, out TValue value)
         {
             value = default(TValue);
             if (key == null) throw new ArgumentNullException(nameof(key));
-            if (!_keys.Contains(key)) return false;
-            value = _values[_keys.IndexOf(key)];
+            if (!m_keys.Contains(key)) return false;
+            value = m_values[m_keys.IndexOf(key)];
             return true;
         }
 
@@ -84,20 +83,20 @@ namespace FrogLibrary
                 if (key == null)
                     throw new ArgumentNullException(nameof(key));
 
-                if (!_keys.Contains(key))
+                if (!m_keys.Contains(key))
                     throw new ArgumentException($"key doesn't exist: {key}");
 
-                return _values[_keys.IndexOf(key)];
+                return m_values[m_keys.IndexOf(key)];
             }
             set
             {
                 if (key == null)
                     throw new ArgumentNullException(nameof(key));
 
-                if (!_keys.Contains(key))
+                if (!m_keys.Contains(key))
                     throw new ArgumentException($"key doesn't exist: {key}");
 
-                _values[_keys.IndexOf(key)] = value;
+                m_values[m_keys.IndexOf(key)] = value;
             }
         }
 
@@ -110,8 +109,8 @@ namespace FrogLibrary
 
         public void Clear()
         {
-            _keys.Clear();
-            _values.Clear();
+            m_keys.Clear();
+            m_values.Clear();
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
@@ -131,7 +130,7 @@ namespace FrogLibrary
 
         public int Count
         {
-            get { return _keys.Count; }
+            get { return m_keys.Count; }
         }
 
         public bool IsReadOnly
@@ -145,7 +144,7 @@ namespace FrogLibrary
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return _keys.Select((t, i) => new KeyValuePair<TKey, TValue>(t, _values[i])).GetEnumerator();
+            return m_keys.Select((t, i) => new KeyValuePair<TKey, TValue>(t, m_values[i])).GetEnumerator();
         }
 
         #endregion
@@ -154,9 +153,9 @@ namespace FrogLibrary
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            for (int i = 0; i < _keys.Count; i++)
+            for (int i = 0; i < m_keys.Count; i++)
             {
-                yield return new KeyValuePair<TKey, TValue>(_keys[i], _values[i]);
+                yield return new KeyValuePair<TKey, TValue>(m_keys[i], m_values[i]);
             }
         }
 
@@ -166,12 +165,12 @@ namespace FrogLibrary
 
         public ICollection<TKey> Keys
         {
-            get { return _keys.ToArray(); }
+            get { return m_keys.ToArray(); }
         }
 
         public ICollection<TValue> Values
         {
-            get { return _values.ToArray(); }
+            get { return m_values.ToArray(); }
         }
 
         #endregion
