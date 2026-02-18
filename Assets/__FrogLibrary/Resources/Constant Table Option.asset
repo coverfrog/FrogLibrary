@@ -16,3 +16,9 @@ MonoBehaviour:
   _codename: 
   _displayName: 
   _description: 
+  m_excelFolderPath: Assets/
+  m_tableFolderPath: Assets/
+  m_namespace: 
+  m_matchDict:
+    m_keys: []
+    m_values: []
