@@ -24,8 +24,7 @@ namespace FrogLibrary
                 BootOption bootOption = Resources.Load<BootOption>(AssetMenuNames.k_bootOptionFileName);
 
                 // 2. 인스턴스 호출
-                GameObject[] memoryList = await UniTask.WhenAll(Enumerable.Select(bootOption.InstanceAddressList, AddressableUtil.LoadAsync<GameObject>));
-                GameObject[] instanceList = await UniTask.WhenAll(memoryList.Select(mem => Addressables.InstantiateAsync(mem).ToUniTask()));
+                var instanceList = await UniTask.WhenAll(Enumerable.Select(bootOption.InstanceAddressList, adr => AddressableUtil.InstantiateAsync<GameObject>(adr)));
                 
                 IsBoot = true;
                 
