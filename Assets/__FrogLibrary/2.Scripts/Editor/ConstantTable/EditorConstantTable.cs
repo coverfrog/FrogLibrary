@@ -45,7 +45,7 @@ namespace FrogLibrary
 
                 // 저장할 경로와 클래스 타입을 얻는다.
                 var assetPath = option.TableFolderPath + "/" + assetName + ".asset";
-                var classType = Type.GetType($"{option.Namespace}{(string.IsNullOrEmpty(option.Namespace) ? "." : "")}{className}, Assembly-CSharp");
+                var classType = Type.GetType($"{option.Namespace}{(string.IsNullOrEmpty(option.Namespace) ? "" : ".")}{className}, Assembly-CSharp");
 
                 // 다이나믹 형식으로 호출 한다.
                 Object o = AssetDatabase.LoadAssetAtPath(assetPath, classType);
