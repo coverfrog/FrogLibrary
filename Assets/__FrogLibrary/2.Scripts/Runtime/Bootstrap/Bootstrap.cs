@@ -24,20 +24,34 @@ namespace FrogLibrary
                 BootOption bootOption = Resources.Load<BootOption>(AssetMenuNames.k_bootOptionFileName);
 
                 // 2. 인스턴스 호출
-                var instanceList = await UniTask.WhenAll(Enumerable.Select(bootOption.InstanceAddressList, adr => AddressableUtil.InstantiateAsync<GameObject>(adr)));
+                GameObject[] instanceList = await UniTask.WhenAll(Enumerable.Select(bootOption.InstanceAddressList, adr => AddressableUtil.InstantiateAsync<GameObject>(adr)));
                 
                 IsBoot = true;
                 
-                // 3. 데이터 로드
+                // 3. 데이터 로더 탐색 및 Instance 화
+                bool isDontDestroyOnLoad = bootOption.IsDontDestroyOnLoad;
+                IDataLoader dataLoader = null;
+                
                 foreach (GameObject go in instanceList)
                 {
-                    if (!go.TryGetComponent(out IDataLoader dataLoader))
+                    if (go.TryGetComponent(out IDataLoader tempDataLoader))
                     {
-                        continue;
+                        dataLoader = tempDataLoader;
                     }
-                    
-                    await dataLoader.LoadData(null, () => IsLoadedData = true);
+
+                    if (isDontDestroyOnLoad)
+                    {
+                        Object.DontDestroyOnLoad(go);
+                    }
                 }
+
+                // 4. 데이터 로딩
+                if (dataLoader == null)
+                {
+                    return;
+                }
+                
+                await dataLoader.LoadData(null, () => IsLoadedData = true);
             }
             
             catch (Exception e)
