@@ -4,7 +4,10 @@ namespace FrogLibrary
 {
     public static class StringUtil
     {
-        public static string ToNicifyVariableName(string name)
+        public static string ToNicifyVariableName
+        (
+            this string name
+        )
         {
             if (string.IsNullOrEmpty(name))
                 return string.Empty;

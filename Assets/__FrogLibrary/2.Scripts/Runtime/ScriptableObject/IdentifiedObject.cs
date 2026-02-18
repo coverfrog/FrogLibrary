@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace FrogLibrary
 {
-    [CreateAssetMenu(menuName = "FrogLibrary/IdentifiedObject", fileName = "IdentifiedObject")]
-    public class IdentifiedObject : ScriptableObject, ICloneable
+    public abstract class IdentifiedObject : ScriptableObject, ICloneable
     {
         [Header("# Info")]
         [SerializeField] private Sprite _icon;

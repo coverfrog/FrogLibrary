@@ -4,8 +4,8 @@ namespace FrogLibrary
 {
     public static class SpriteUtil
     {
-        public static Sprite CreateSolidSprite(
-            Color color,
+        public static Sprite ToSprite(
+            this Color color,
             int ppu = 1,
             bool mipmap = false,
             bool makeNoLongerReadable = false)
