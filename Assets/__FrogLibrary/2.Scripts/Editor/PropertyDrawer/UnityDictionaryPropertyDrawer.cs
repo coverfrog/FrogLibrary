@@ -1,8 +1,9 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace FrogLibrary.Editor
+namespace FrogLibrary
 {
     [CustomPropertyDrawer(typeof(UnityDictionary<,>), true)]
     public class UnityDictionaryDrawer : PropertyDrawer
@@ -130,10 +131,11 @@ namespace FrogLibrary.Editor
             for (int i = 0; i < keysProp.arraySize; i++)
             {
                 height += Mathf.Max(EditorGUI.GetPropertyHeight(keysProp.GetArrayElementAtIndex(i)), 
-                                   EditorGUI.GetPropertyHeight(valuesProp.GetArrayElementAtIndex(i))) + Spacing + 2;
+                    EditorGUI.GetPropertyHeight(valuesProp.GetArrayElementAtIndex(i))) + Spacing + 2;
             }
 
             return height;
         }
     }
 }
+#endif
