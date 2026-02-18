@@ -48,21 +48,22 @@ namespace FrogLibrary
                 var classType = Type.GetType($"{option.Namespace}{(string.IsNullOrEmpty(option.Namespace) ? "." : "")}{className}, Assembly-CSharp");
 
                 // 다이나믹 형식으로 호출 한다.
-                ConstantTable so = (ConstantTable)AssetDatabase.LoadAssetAtPath(assetPath, classType);
+                ScriptableObject so = AssetDatabase.LoadAssetAtPath(assetPath, classType) as ScriptableObject;
 
                 // 없으면 새로 생성 한다.
                 if (so == null)
                 {
-                    so = (ConstantTable)ScriptableObject.CreateInstance(classType);
+                    so = ScriptableObject.CreateInstance(classType);
                     AssetDatabase.CreateAsset(so, assetPath);
 
                     return;
                 }
 
                 // 로딩을 시키고 나서 업데이트 한다.
-                so.Load(data);
+                ConstantTable constantTable = so as ConstantTable;
+                constantTable!.Load(data);
                 
-                EditorUtility.SetDirty(so);
+                EditorUtility.SetDirty(constantTable);
             }
         }
 
