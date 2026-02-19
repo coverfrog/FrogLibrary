@@ -51,7 +51,9 @@ namespace FrogLibrary
                     return;
                 }
                 
-                await dataLoader.LoadData(null, () => IsLoadedData = true);
+                await dataLoader.LoadData(null, null);
+
+                IsLoadedData = true;
             }
             
             catch (Exception e)
