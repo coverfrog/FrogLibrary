@@ -15,6 +15,8 @@ namespace FrogLibrary
             AfterBoot();
             
             yield return new WaitUntil(() => Bootstrap.IsLoadedData);
+
+            AfterLoadedData();
         }
         
         protected virtual void BeforeBoot() {}
