@@ -1,191 +1,161 @@
+﻿using System;
 using System.Collections;
-using System.Runtime.Serialization;
-using UnityEngine;
 using System.Collections.Generic;
-using System;
-using System.Collections.ObjectModel;
 using System.Linq;
+using UnityEngine;
 
 namespace FrogLibrary
 {
     [Serializable]
     public class UnityDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
-        [SerializeField] private List<TKey> m_keys = new List<TKey>();
-        [SerializeField] private List<TValue> m_values = new List<TValue>();
-
-        public UnityDictionary()
+        // 키와 값을 하나의 단위로 묶는 내부 구조체
+        [Serializable]
+        public struct Entry
         {
-            
+            public TKey Key;
+            public TValue Value;
+
+            public Entry(TKey key, TValue value)
+            {
+                Key = key;
+                Value = value;
+            }
         }
+
+        // 리스트 1개만 사용
+        [SerializeField] private List<Entry> m_entries = new List<Entry>();
+
+        public UnityDictionary() { }
 
         public UnityDictionary(int capacity)
         {
-            m_keys.Capacity = capacity;
-            m_values.Capacity = capacity;
+            m_entries.Capacity = capacity;
         }
+        
+        #region IDictionary Implementation
 
         public bool ContainsKey(TKey key)
         {
-            return m_keys.Contains(key);
+            return m_entries.Any(e => EqualityComparer<TKey>.Default.Equals(e.Key, key));
         }
 
         public void Add(TKey key, TValue value)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
-            if (m_keys.Contains(key))
-                throw new ArgumentException("key already exit " + key);
-            m_keys.Add(key);
-            m_values.Add(value);
+            if (ContainsKey(key)) throw new ArgumentException("Key already exists: " + key);
+
+            m_entries.Add(new Entry(key, value));
         }
 
         public bool Remove(TKey key)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
-            if (!m_keys.Contains(key)) return false;
-            var index = m_keys.IndexOf(key);
-            m_keys.RemoveAt(index);
-            m_values.RemoveAt(index);
-            return true;
-        }
+            
+            int index = m_entries.FindIndex(e => EqualityComparer<TKey>.Default.Equals(e.Key, key));
+            if (index < 0) return false;
 
-        // Private method for removing the key/value pair at a particular index
-        // This should never be public; dictionaries aren't supposed to have any
-        // ordering on their elements, so the idea of an element at a particular
-        // index isn't valid in the outside world. That we're using indexable
-        // lists for storing keys/values is an implementation detail.
-        private void RemoveAt(int index)
-        {
-            if (index >= m_keys.Count) throw new ArgumentOutOfRangeException(nameof(index));
-            m_keys.RemoveAt(index);
-            m_values.RemoveAt(index);
+            m_entries.RemoveAt(index);
+            return true;
         }
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            value = default(TValue);
             if (key == null) throw new ArgumentNullException(nameof(key));
-            if (!m_keys.Contains(key)) return false;
-            value = m_values[m_keys.IndexOf(key)];
-            return true;
-        }
 
-        TValue IDictionary<TKey, TValue>.this[TKey key]
-        {
-            get => this[key];
-            set => this[key] = value;
+            int index = m_entries.FindIndex(e => EqualityComparer<TKey>.Default.Equals(e.Key, key));
+            if (index >= 0)
+            {
+                value = m_entries[index].Value;
+                return true;
+            }
+
+            value = default;
+            return false;
         }
 
         public TValue this[TKey key]
         {
             get
             {
-                if (key == null)
-                    throw new ArgumentNullException(nameof(key));
-
-                if (!m_keys.Contains(key))
-                    throw new ArgumentException($"key doesn't exist: {key}");
-
-                return m_values[m_keys.IndexOf(key)];
+                if (key == null) throw new ArgumentNullException(nameof(key));
+                int index = m_entries.FindIndex(e => EqualityComparer<TKey>.Default.Equals(e.Key, key));
+                if (index < 0) throw new KeyNotFoundException($"Key doesn't exist: {key}");
+                return m_entries[index].Value;
             }
             set
             {
-                if (key == null)
-                    throw new ArgumentNullException(nameof(key));
-
-                if (!m_keys.Contains(key))
-                    throw new ArgumentException($"key doesn't exist: {key}");
-
-                m_values[m_keys.IndexOf(key)] = value;
+                if (key == null) throw new ArgumentNullException(nameof(key));
+                int index = m_entries.FindIndex(e => EqualityComparer<TKey>.Default.Equals(e.Key, key));
+                if (index < 0) throw new KeyNotFoundException($"Key doesn't exist: {key}");
+                
+                // 구조체이므로 값을 직접 수정하지 않고 새로 할당
+                m_entries[index] = new Entry(key, value);
             }
         }
 
-        #region ICollection implementation
+        public ICollection<TKey> Keys => m_entries.Select(e => e.Key).ToList();
+        public ICollection<TValue> Values => m_entries.Select(e => e.Value).ToList();
 
-        public void Add(KeyValuePair<TKey, TValue> item)
-        {
-            Add(item.Key, item.Value);
-        }
+        #endregion
 
-        public void Clear()
-        {
-            m_keys.Clear();
-            m_values.Clear();
-        }
+        #region ICollection Implementation
 
-        public bool Contains(KeyValuePair<TKey, TValue> item)
-        {
-            return ContainsKey(item.Key);
-        }
+        public int Count => m_entries.Count;
+        public bool IsReadOnly => false;
+
+        public void Add(KeyValuePair<TKey, TValue> item) => Add(item.Key, item.Value);
+        public void Clear() => m_entries.Clear();
+        public bool Contains(KeyValuePair<TKey, TValue> item) => ContainsKey(item.Key);
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
-        }
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (arrayIndex < 0 || arrayIndex + Count > array.Length) throw new ArgumentOutOfRangeException();
 
-        public bool Remove(KeyValuePair<TKey, TValue> item)
-        {
-            return Remove(item.Key);
-        }
-
-        public int Count
-        {
-            get { return m_keys.Count; }
-        }
-
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        #endregion
-
-        #region IEnumerable implementation
-
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-        {
-            return m_keys.Select((t, i) => new KeyValuePair<TKey, TValue>(t, m_values[i])).GetEnumerator();
-        }
-
-        #endregion
-
-        #region IEnumerable implementation
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            for (int i = 0; i < m_keys.Count; i++)
+            for (int i = 0; i < m_entries.Count; i++)
             {
-                yield return new KeyValuePair<TKey, TValue>(m_keys[i], m_values[i]);
+                array[arrayIndex + i] = new KeyValuePair<TKey, TValue>(m_entries[i].Key, m_entries[i].Value);
             }
         }
 
-        #endregion
-
-        #region IDictionary implementation
-
-        public ICollection<TKey> Keys
-        {
-            get { return m_keys.ToArray(); }
-        }
-
-        public ICollection<TValue> Values
-        {
-            get { return m_values.ToArray(); }
-        }
+        public bool Remove(KeyValuePair<TKey, TValue> item) => Remove(item.Key);
 
         #endregion
+
+        #region IEnumerable Implementation
+
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        {
+            foreach (var entry in m_entries)
+            {
+                yield return new KeyValuePair<TKey, TValue>(entry.Key, entry.Value);
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        #endregion
+
+     
     }
-
+    
     public static class UnityDictionaryExtensions
     {
-        public static IReadOnlyDictionary<TK, TV> ToReadOnlyDictionary<TK, TV>(this UnityDictionary<TK, TV> dictionary)
+        public static IReadOnlyDictionary<TK, TV> ToReadonlyDictionary<TK, TV>(
+            this IDictionary<TK, TV> dictionary)
         {
-            return dictionary.ToDictionary(kv => kv.Key, kv => kv.Value);
+            Dictionary<TK, TV> result = new Dictionary<TK, TV>();
+            dictionary.ToList().ForEach(e => result.Add(e.Key, e.Value));
+            return result;
         }
 
-        public static Dictionary<TK, TV> ToDictionary<TK, TV>(this UnityDictionary<TK, TV> dictionary)
+        public static UnityDictionary<TK, TV> ToUnityDictionary<TK, TV>(
+            this IDictionary<TK, TV> dictionary)
         {
-            return dictionary.ToDictionary(kv => kv.Key, kv => kv.Value);
+            UnityDictionary<TK, TV> result = new UnityDictionary<TK, TV>();
+            dictionary.ToList().ForEach(e => result.Add(e.Key, e.Value));
+            return result;
         }
     }
 }

@@ -18,6 +18,6 @@ namespace FrogLibrary
 
         public string Namespace => m_namespace;
         
-        public IReadOnlyDictionary<string, string> MatchDict => m_matchDict.ToReadOnlyDictionary();
+        public IReadOnlyDictionary<string, string> MatchDict => m_matchDict.ToReadonlyDictionary();
     }
 }
