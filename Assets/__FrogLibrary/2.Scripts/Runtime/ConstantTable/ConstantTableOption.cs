@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace FrogLibrary
@@ -10,7 +11,7 @@ namespace FrogLibrary
         [SerializeField] private string m_excelFolderPath = "Assets/";
         [SerializeField] private string m_tableFolderPath = "Assets/";
         [SerializeField] private string m_namespace = "";
-        [SerializeField] private UnityDictionary<string, string> m_matchDict = new();   // 엑셀 이름 - So 이름
+        [SerializeField] private List<ConstantNameMatch> m_matches = new List<ConstantNameMatch>();
 
         public string ExcelFolderPath => m_excelFolderPath;
         
@@ -18,6 +19,6 @@ namespace FrogLibrary
 
         public string Namespace => m_namespace;
         
-        public IReadOnlyDictionary<string, string> MatchDict => m_matchDict.ToReadonlyDictionary();
+        public IReadOnlyDictionary<string, ConstantNameMatch> Matches => m_matches.ToDictionary(m => m.excelName);
     }
 }

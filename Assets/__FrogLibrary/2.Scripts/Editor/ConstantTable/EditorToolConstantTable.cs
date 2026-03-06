@@ -39,7 +39,7 @@ namespace FrogLibrary
                 Directory.CreateDirectory(option.TableFolderPath);
 
             // 경로를 순회
-            var matchDict = option.MatchDict;
+            var matchDict = option.Matches;
             foreach (string path in paths)
             {
                 // 데이터 추출
