@@ -47,7 +47,7 @@ namespace FrogLibrary
 
                 // 이름 가져오기
                 var assetName = Path.GetFileNameWithoutExtension(path);
-                var className = matchDict.GetValueOrDefault(assetName);
+                var className = matchDict.GetValueOrDefault(assetName).className;
 
                 // 저장할 경로와 클래스 타입을 얻는다.
                 var assetPath = option.TableFolderPath + "/" + assetName + ".asset";
