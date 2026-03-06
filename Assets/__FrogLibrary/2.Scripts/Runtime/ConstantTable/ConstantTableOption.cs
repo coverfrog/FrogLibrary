@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace FrogLibrary
 {
-    [CreateAssetMenu(menuName = AssetMenuNames.k_constantTableOptionMenuName, fileName = AssetMenuNames.k_constantTableOptionFileName)]
-    public class ConstantTableOption : IdentifiedObject
+    [CreateAssetMenu(menuName = "FrogLibrary/ConstantTableOption", fileName = "ConstantTableOption")]
+    public class ConstantTableOption : ScriptableObject
     {
         [Header("# Constant Table")] 
         [SerializeField] private string m_excelFolderPath = "Assets/";

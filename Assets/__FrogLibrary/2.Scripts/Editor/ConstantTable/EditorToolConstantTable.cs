@@ -6,15 +6,16 @@ using System.IO;
 using System.Linq;
 using ExcelDataReader;
 using UnityEditor;
+using UnityEditor.EditorTools;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
 namespace FrogLibrary
 {
-    public static class EditorConstantTable
+    public static class EditorToolConstantTable
     {
-        [MenuItem(AssetMenuNames.k_constantTableRun)]
+        [MenuItem("FrogLibrary/ConstantTable")]
         public static void Run()
         {
             ConvertExcels();
@@ -25,7 +26,12 @@ namespace FrogLibrary
         private static void ConvertExcels()
         {
             // 경로 추출
-            var option = Resources.Load<ConstantTableOption>(AssetMenuNames.k_constantTableOptionFileName);
+            var option = Resources.Load<ConstantTableOption>("FrogLibrary/ConstantTableOption");
+            if (option == null)
+            {
+                EditorUtility.DisplayDialog("ConstantTable", "Create Option At Resources/FrogLibrary/ConstantTableOption", "OK");
+                return;
+            }
             var paths = Directory.GetFiles(option.ExcelFolderPath, "*.xlsx");
 
             // 생성 폴더 없을시 생성
@@ -55,8 +61,6 @@ namespace FrogLibrary
                 {
                     so = ScriptableObject.CreateInstance(classType);
                     AssetDatabase.CreateAsset(so, assetPath);
-
-                    return;
                 }
 
                 // 로딩을 시키고 나서 업데이트 한다.
